@@ -26,16 +26,17 @@ fn main() {
 
             for i in 0..parts.len() - 1 {
                 // 1.
-                if parts[i] == parts[i+1] { continue; }
-                else if parts[i].abs_diff(parts[i+1]) > 3 {
+                if parts[i] == parts[i+1] { safe = 0; break; }
+                if parts[i].abs_diff(parts[i+1]) > 3 {
                     safe = 0;
                     break;
-                // 2.
-                } else if parts[i] < parts[i+1] {
+                    // 2.
+                } 
+                if parts[i] < parts[i+1] {
                     if desc == true { safe = 0; break; }
                     else { asc = true; }
-                // 3.
-                } else if parts[i] > parts[i+1] {
+                } 
+                if parts[i] > parts[i+1] {
                     if asc == true { safe = 0; break; }
                     else { desc = true; }
                 }
