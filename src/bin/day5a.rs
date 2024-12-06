@@ -1,7 +1,10 @@
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
+use std::{thread, time};
+
 const INPUT: &str = include_str!("../../inputs/day5.txt");
 
 fn main() {
+    let time = time::Duration::from_millis(1000);
     let mut rules: HashMap<&str, Vec<&str>> = HashMap::new();
     let mut result = 0;
 
@@ -17,24 +20,27 @@ fn main() {
                         rules.entry(rules_to_insert[0]).and_modify(|val| val.push(rules_to_insert[1]));
                     }
                 } else if line.contains(",") {
-                    let line_splits: Vec<&str> = line.split(",").collect();
+                    let page_numbers: Vec<&str> = line.split(",").collect();
                     let mut safe = true;
-                    line_splits
+                    page_numbers
                         .iter()
                         .enumerate()
-                        .for_each(|(i, line_split)| {
-                            if i < line_splits.len() - 1 && rules.get(line_split) != None {
-                                println!("rules.get(line_split): {:?}", rules.get(line_split));
-                                for comp_idx in (0..line_splits.len()-2).rev() {
-                                    println!("comp_idx {comp_idx}");
-                                    println!("line_splits[comp_idx]: {}", line_splits[comp_idx]);
-                                    if rules[line_split].contains(&line_splits[comp_idx]) { safe = false; }
+                        .for_each(|(i, page_number)| {
+                            thread::sleep(time);
+                            if i < page_numbers.len() - 1 && rules.get(page_number) != None {
+                                println!("rules.get(page_number): {:?}", rules.get(page_number));
+                                for pgno_idx in (0..page_numbers.len()-2).rev() {
+                                    let rules_set: HashSet<&str> = HashSet::from(rules[page_number]);
+                                    let page_rules_to_check: HashSet<&str> = HashSet::from(page_numbers[0..pgno_idx]);
+                                    println!("pgno_idx {pgno_idx}");
+                                    println!("page_numbers[pgno_idx]: {}", page_numbers[pgno_idx]);
+                                    if rules_set.intersection(&page_rules_to_check).collect() == [] { safe = false; }
                                 }
                             }
                         });
                     if safe {
-                        println!("safe! {:?}", line_splits);
-                        result += line_splits[line_splits.len() / 2].parse::<i32>().unwrap();
+                        println!("safe! {:?}", page_numbers);
+                        result += page_numbers[page_numbers.len() / 2].parse::<i32>().unwrap();
                     }
                 }
         });
