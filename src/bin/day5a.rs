@@ -25,7 +25,7 @@ fn main() {
                         .for_each(|(i, line_split)| {
                             if i < line_splits.len() - 1 && rules.get(line_split) != None {
                                 println!("rules.get(line_split): {:?}", rules.get(line_split));
-                                for comp_idx in line_splits.len()-2..0 {
+                                for comp_idx in (0..line_splits.len()-2).rev() {
                                     println!("comp_idx {comp_idx}");
                                     println!("line_splits[comp_idx]: {}", line_splits[comp_idx]);
                                     if rules[line_split].contains(&line_splits[comp_idx]) { safe = false; }
@@ -33,6 +33,7 @@ fn main() {
                             }
                         });
                     if safe {
+                        println!("safe! {:?}", line_splits);
                         result += line_splits[line_splits.len() / 2].parse::<i32>().unwrap();
                     }
                 }
