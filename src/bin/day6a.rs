@@ -12,7 +12,7 @@ fn main() {
     loop {
             match direction {
                 Direction::Up => {
-                    if GRID_SIZE > guard_pos { if map[guard_pos] == '.' { result += 1} break; }
+                    if GRID_SIZE > guard_pos { if map[guard_pos] == '.' { result += 1 } break; }
                     match map.get(guard_pos - GRID_SIZE) {
                         Some('#') => { direction = Direction::Right; }
                         Some('.') | Some('X') => { if map[guard_pos] == '.' || map[guard_pos] == '^' { map[guard_pos] = 'X'; result += 1; } guard_pos -= GRID_SIZE; }
